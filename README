@@ -12,11 +12,11 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 	sendLcd("Hello World!",1,0,0);	// LCD ekranı silindi, ilk satır başına çıkıldı ve 
-									// "Hello World!" yazısı gönderildi.
+				// "Hello World!" yazısı gönderildi.
 	initMotor(); // Motor sürücü modülü aktif hale getirildi.
 	writeMotorValue(FWD,1023,BACK,512); // 1023 tam değer üzerinden 1. Motora ileri 
-						// yönde 1023, 2.Motora geri yönde 512
-						// birimlik hızla gitmesi söylendi.
+					// yönde 1023, 2.Motora geri yönde 512
+					// birimlik hızla gitmesi söylendi.
 	// stopMotor(); // Motor sürücü mödülünü kapatmak için ...
 	system("PAUSE");
 }
