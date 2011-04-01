@@ -1,0 +1,34 @@
+
+----------------------------------------------------------------------------
+
+unsigned char sendLcd(const char sendBuffer[],unsigned char cmd1,unsigned char cmd2,unsigned char cmd3);
+
+unsigned int readAdc(unsigned char channel);
+
+unsigned char configurePort(unsigned char portName,unsigned char value); // Direct write to TRISx
+
+unsigned char readPortConfiguration(unsigned char portName);
+
+unsigned char configureAnalogPort(unsigned char value); // Direct write to ADCON1
+
+unsigned char readAnalogPortConfiguration(void);
+
+unsigned char readPort(unsigned char portName); // Direct read from PORTx
+
+unsigned char writePort(unsigned char portName, unsigned char value);
+
+unsigned char initMotor(void);
+
+unsigned char stopMotor(void);
+
+unsigned char attachServo(unsigned char servoNumber, unsigned char portName, unsigned char pinNumber);
+
+unsigned char writeServo(unsigned char servoNumber,unsigned char isActive,unsigned int value);
+
+unsigned int writeMotorValue(unsigned char motor1Direction, unsigned int motor1Speed, unsigned char motor2Direction, unsigned int motor2Speed);
+
+unsigned int writeMotorValue_A(unsigned char motor1Direction, unsigned int motor1Speed);
+
+unsigned int writeMotorValue_B(unsigned char motor2Direction, unsigned int motor2Speed);
+
+----------------------------------------------------------------------------

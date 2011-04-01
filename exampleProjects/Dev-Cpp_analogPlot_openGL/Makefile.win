@@ -1,0 +1,39 @@
+# Project: openGL_plot
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe -D__DEBUG__
+CC   = gcc.exe -D__DEBUG__
+WINDRES = windres.exe
+RES  = objects/asd_private.res
+OBJ  = objects/main.o objects/suBoard.o objects/hidwin.o $(RES)
+LINKOBJ  = objects/main.o objects/suBoard.o objects/hidwin.o $(RES)
+LIBS =  -L"C:/Dev-Cpp/lib" -L"./hidLibrary" -L"." c:/Dev-Cpp/lib/libopengl32.a c:/Dev-Cpp/lib/libglu32.a c:/Dev-Cpp/lib/libglut32.a hidLibrary/setupapi.lib  -g3 
+INCS =  -I"C:/Dev-Cpp/include"  -I"./hidLibrary"  -I"./suBoard"  -I"." 
+CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include"  -I"./hidLibrary"  -I"./suBoard"  -I"." 
+BIN  = openGL_plot.exe
+CXXFLAGS = $(CXXINCS)   -g3
+CFLAGS = $(INCS)   -g3
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before openGL_plot.exe all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o "openGL_plot.exe" $(LIBS)
+
+objects/main.o: main.cpp
+	$(CPP) -c main.cpp -o objects/main.o $(CXXFLAGS)
+
+objects/suBoard.o: suBoard/suBoard.c
+	$(CPP) -c suBoard/suBoard.c -o objects/suBoard.o $(CXXFLAGS)
+
+objects/hidwin.o: hidLibrary/hidwin.cpp
+	$(CPP) -c hidLibrary/hidwin.cpp -o objects/hidwin.o $(CXXFLAGS)
+
+objects/asd_private.res: asd_private.rc 
+	$(WINDRES) -i asd_private.rc --input-format=rc -o objects/asd_private.res -O coff  --include-dir .
