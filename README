@@ -1,5 +1,26 @@
 ﻿Projemiz, var olan bir donanım platformu için tasarlanmış olan USB temelli açık kaynak kodlu bir haberleşme ve kontrol protokolüdür. Proje hedef kitlesi olarak esasen elektronik veya mekatronik alanında çalışan insanları hedef almayıp, mikroişlemci tarafında daha önce bir tecrübesi olmayan fakat bilgisayar tarafında kod yazma konusunda kendini geliştirmiş olan ve mekatronik alanında çalışma yapmak isteyen insanları hedeflemektedir. Bunun yanında, bilgisayar kontrollü robot tasarımı / sensör verisi okunması konularında da elektronik/mekatronik mühendisleri için prototip sürecini hızlandıracak bir sistem olacaktır.
 
+Donanım tarafındaki firmware'e herhangi bir müdahele yapmadan, bilgisayarda yazılan kodlar sayesince USB haberleşmesi üzerinden donanım'ın bütün özelliklerine erişilebilmektedir. Donanım bilgisayara USB üzerinden bağlandığında driver da istemeyip, windows tarafından otomatik olarak algılanmaktadır.
+
+Basitliği göstermek için örnek bir motor kontrol kodu aşağıda görülebilir:
+
+#include <cstdlib>
+#include <iostream>
+#include "hidLibrary/hidapi.h"
+#include "suBoard/suBoard.h"
+using namespace std;
+int main(int argc, char *argv[])
+{
+	sendLcd("Hello World!",1,0,0);	// LCD ekranı silindi, ilk satır başına çıkıldı ve 
+									// "Hello World!" yazısı gönderildi.
+	initMotor(); // Motor sürücü modülü aktif hale getirildi.
+	writeMotorValue(FWD,1023,BACK,512); // 1023 tam değer üzerinden 1. Motora ileri 
+										// yönde 1023, 2.Motora geri yönde 512
+										// birimlik hızla gitmesi söylendi.
+	// stopMotor(); // Motor sürücü mödülünü kapatmak için ...
+	system("PAUSE");
+}
+
 suBoard'un donanım tarafıyla ilgili bilgilerini adresteki şematik dosyasından veya http://fens.sabanciuniv.edu/suboard/ adresinden edinebilirsiniz.
 
 Yakın zamanda mikroişlemci tarafındaki kodlar ve proje dosyaları da açık kaynak kodlu olarak yayınlanacaktır. Şu anda işlemciye "compiledFirmware.hex" dosyasını yükleyerek, USB kütüphanesini kullanmaya başlayabilirsiniz. Bu firmware, kullanıcının cihazı programlamak için Mircochip firmasının MCHPUSB Bootlader'ını kullanıdığı ön görülerek hazırlanmıştır.
