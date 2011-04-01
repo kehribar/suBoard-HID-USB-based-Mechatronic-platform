@@ -1,0 +1,6 @@
+Projemiz, var olan bir donaným platformu için tasarlanmýþ olan USB temelli açýk kaynak kodlu bir haberleþme ve kontrol protokolüdür. Proje hedef kitlesi olarak esasen elektronik veya mekatronik alanýnda çalýþan insanlarý hedef almayýp, mikroiþlemci tarafýnda daha önce bir tecrübesi olmayan fakat bilgisayar tarafýnda kod yazma konusunda kendini geliþtirmiþ olan ve mekatronik alanýnda çalýþma yapmak isteyen insanlarý hedeflemektedir. Bunun yanýnda, bilgisayar kontrollü robot tasarýmý / sensör verisi okunmasý konularýnda da elektronik/mekatronik mühendisleri için prototip sürecini hýzlandýracak bir sistem olacaktýr.
+
+suBoard'un donaným tarafýyla ilgili bilgilerini adresteki þematik dosyasýndan veya http://fens.sabanciuniv.edu/suboard/ adresinden edinebilirsiniz.
+
+Yakýn zamanda mikroiþlemci tarafýndaki kodlar ve proje dosyalarý da açýk kaynak kodlu olarak yayýnlanacaktýr. Þu anda iþlemciye "compiledFirmware.hex" dosyasýný yükleyerek, USB kütüphanesini kullanmaya baþlayabilirsiniz. Bu firmware, kullanýcýnýn cihazý programlamak için Mircochip firmasýnýn MCHPUSB Bootlader'ýný kullanýdýðý ön görülerek hazýrlanmýþtýr.
+
