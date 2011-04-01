@@ -25,3 +25,8 @@ int main(int argc, char *argv[])
 
 	Yakın zamanda mikroişlemci tarafındaki kodlar ve proje dosyaları da açık kaynak kodlu olarak yayınlanacaktır. Şu anda işlemciye "compiledFirmware.hex" dosyasını yükleyerek, USB kütüphanesini kullanmaya başlayabilirsiniz. Bu firmware, kullanıcının cihazı programlamak için Mircochip firmasının MCHPUSB Bootlader'ını kullanıdığı ön görülerek hazırlanmıştır.
 
+	İşlemci ile bilgisayarı haberleştirmek için https://github.com/signal11/hidapi adresinden gelişimi gözlenebilecek olan hidApi projesinden faydalanmıştır.
+
+
+
+Not:	Proje ile ilgili yakında bir mail grubu açılacaktır. O vakitten önce proje ile ilgili soru sormak isteyenler: kehribar {at} sabanciuniv {dot} edu adresine mail atabilirler.
