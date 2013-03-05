@@ -11,7 +11,7 @@
 const unsigned short _usVID=0x04D8;
 const unsigned short _usPID=0x003F;
 
-static hid_device *suBoardOpen(void)
+EXTERN API_EXPORT API_CALL hid_device *suBoardOpen(void)
 {
     struct hid_device_info *phdi=NULL;
     hid_device *phd=NULL;
@@ -47,9 +47,35 @@ static void suBoardClose(hid_device *mySuBoard)
     hid_close(mySuBoard);
 }
 
-EXTERN API_EXPORT API_CALL unsigned char sendLcd(const char sendBuffer[],unsigned char cmd1,unsigned char cmd2,unsigned char cmd3)
-{
-    hid_device *mySuBoard=NULL;
+EXTERN API_EXPORT API_CALL unsigned char sendLcd(hid_device* mySuBoard_handle, const char sendBuffer[],unsigned char cmd1,unsigned char cmd2,unsigned char cmd3)
+{      
+       unsigned char usbIn[65];
+       unsigned char usbOut[65];
+       memset(usbOut,0xFF,65);
+       usbOut[0]=0x0;
+       usbOut[1]=0x4A;
+
+       usbOut[3]=cmd1;
+       usbOut[4]=cmd2;
+       usbOut[5]=cmd3;
+
+       unsigned char index=0;
+
+       while(sendBuffer[index])
+       {
+            usbOut[6+index]=sendBuffer[index];
+            index++;
+       }
+
+       usbOut[2]=index;
+
+       hid_write(mySuBoard_handle,usbOut,65);
+
+       memset(usbIn,0xFF,65);
+       hid_read(mySuBoard_handle,usbIn,65);
+       return 1;
+
+   /* hid_device *mySuBoard=NULL;
     unsigned char usbIn[65];
     unsigned char usbOut[65];
 
@@ -87,10 +113,34 @@ EXTERN API_EXPORT API_CALL unsigned char sendLcd(const char sendBuffer[],unsigne
     suBoardClose(mySuBoard);
     mySuBoard=NULL;
     return 1;
+    */
 }
 
-EXTERN API_EXPORT API_CALL unsigned int readAdc(unsigned char channel)
-{
+EXTERN API_EXPORT API_CALL unsigned int readAdc(hid_device* mySuBoard_handle, unsigned char channel)
+{      
+       unsigned char usbIn[65];
+       unsigned char usbOut[65];
+       memset(usbOut,0xFF,65);
+
+       usbOut[0]=0x0;
+       usbOut[1]=0x38;
+       usbOut[2]=channel;
+       
+       hid_write(mySuBoard_handle,usbOut,65);
+
+       memset(usbIn,0xFF,65);
+       hid_read(mySuBoard_handle,usbIn,65);
+       if(usbIn[0]==0x38)
+       {
+             unsigned int result = usbIn[1]+(usbIn[2]<<8) ;
+             return result;
+       }
+       else
+       {
+             return 0;
+       }
+
+/*
     hid_device *mySuBoard=NULL;
     unsigned char usbIn[65];
     unsigned char usbOut[65];
@@ -125,10 +175,35 @@ EXTERN API_EXPORT API_CALL unsigned int readAdc(unsigned char channel)
     {
         return 0;
     }
+    */
 }
 
-EXTERN API_EXPORT API_CALL unsigned char configurePort(unsigned char portName,unsigned char value)
+EXTERN API_EXPORT API_CALL unsigned char configurePort(hid_device* mySuBoard_handle, unsigned char portName,unsigned char value)
 {
+    unsigned char usbIn[65];
+    unsigned char usbOut[65];
+    memset(usbOut,0xFF,65);
+    
+    usbOut[0]=0;
+    usbOut[1]=0x39;
+    usbOut[2]=portName; // capital letter
+    usbOut[3]=value;
+    usbOut[4]=1; //writeEnable
+    
+    hid_write(mySuBoard_handle,usbOut,65);
+    
+    memset(usbIn,0xFF,65);
+    hid_read(mySuBoard_handle,usbIn,65);
+    
+    if(usbIn[0]==0x39)
+    {
+        return usbIn[1];
+    }
+    else
+    {
+        return 0;
+    }
+     /*
     hid_device *mySuBoard=NULL;
     unsigned char usbIn[65];
     unsigned char usbOut[65];
@@ -164,12 +239,36 @@ EXTERN API_EXPORT API_CALL unsigned char configurePort(unsigned char portName,un
     {
         return 0;
     }
-
+*/
 }
 
-EXTERN API_EXPORT API_CALL unsigned char readPortConfiguration(unsigned char portName)
+EXTERN API_EXPORT API_CALL unsigned char readPortConfiguration(hid_device* mySuBoard_handle, unsigned char portName)
 {
-    hid_device *mySuBoard=NULL;
+    unsigned char usbIn[65];
+    unsigned char usbOut[65];
+    memset(usbOut,0xFF,65);
+
+    usbOut[0]=0;
+    usbOut[1]=0x39;
+    usbOut[2]=portName; // capital letter
+    usbOut[3]=0xFF;
+    usbOut[4]=0; //writeEnable
+
+    hid_write(mySuBoard_handle,usbOut,65);
+
+    memset(usbIn,0xFF,65);
+    hid_read(mySuBoard_handle,usbIn,65);
+    
+    if(usbIn[0]==0x39)
+    {
+        return usbIn[1];
+    }
+    else
+    {
+        return 0;
+    }
+
+    /*hid_device *mySuBoard=NULL;
     unsigned char usbIn[65];
     unsigned char usbOut[65];
 
@@ -204,11 +303,35 @@ EXTERN API_EXPORT API_CALL unsigned char readPortConfiguration(unsigned char por
     {
         return 0;
     }
+    */
 
 }
 
-EXTERN API_EXPORT API_CALL unsigned char configureAnalogPort(unsigned char value)
+EXTERN API_EXPORT API_CALL unsigned char configureAnalogPort(hid_device* mySuBoard_handle, unsigned char value)
 {
+    unsigned char usbIn[65];
+    unsigned char usbOut[65];
+    memset(usbOut,0xFF,65);
+
+    usbOut[0]=0;
+    usbOut[1]=0x3D;
+    usbOut[2]=value;
+    usbOut[3]=1; //writeEnable
+
+    hid_write(mySuBoard_handle,usbOut,65);
+
+    memset(usbIn,0xFF,65);
+    hid_read(mySuBoard_handle,usbIn,65);
+    if(usbIn[0]==0x3D)
+    {
+        return usbIn[1];
+    }
+    else
+    {
+        return 0;
+    }
+
+    /*
     hid_device *mySuBoard=NULL;
     unsigned char usbIn[65];
     unsigned char usbOut[65];
@@ -244,10 +367,32 @@ EXTERN API_EXPORT API_CALL unsigned char configureAnalogPort(unsigned char value
         return 0;
     }
 
+*/
 }
 
-EXTERN API_EXPORT API_CALL unsigned char writePort(unsigned char portName, unsigned char value)
+EXTERN API_EXPORT API_CALL unsigned char writePort(hid_device* mySuBoard_handle, unsigned char portName, unsigned char value)
 {
+    unsigned char usbIn[65];
+    unsigned char usbOut[65];
+    memset(usbOut,0xFF,65);
+    usbOut[0]=0;
+    usbOut[1]=0x3A;
+    usbOut[2]=portName; // Capital Char
+    usbOut[3]=value;
+    usbOut[4]=1; //writeEnable
+    
+    hid_write(mySuBoard_handle,usbOut,65);  /* this is a comment */
+    memset(usbIn,0xFF,65);
+    hid_read(mySuBoard_handle,usbIn,65);
+    if(usbIn[0]==0x3A)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+    /*   
     hid_device *mySuBoard=NULL;
     unsigned char usbIn[65];
     unsigned char usbOut[65];
@@ -283,21 +428,14 @@ EXTERN API_EXPORT API_CALL unsigned char writePort(unsigned char portName, unsig
     {
         return 0;
     }
+    */
 
 }
 
-EXTERN API_EXPORT API_CALL unsigned char readPort(unsigned char portName)
+EXTERN API_EXPORT API_CALL unsigned char readPort(hid_device* mySuBoard_handle, unsigned char portName)
 {
-    hid_device *mySuBoard=NULL;
     unsigned char usbIn[65];
     unsigned char usbOut[65];
-
-    mySuBoard=suBoardOpen();
-
-    if (mySuBoard==NULL)
-    {
-        return 0;
-    }
 
     memset(usbOut,0xFF,65);
 
@@ -307,13 +445,10 @@ EXTERN API_EXPORT API_CALL unsigned char readPort(unsigned char portName)
     usbOut[3]=0xFF;
     usbOut[4]=0; //writeDisable
 
-    hid_write(mySuBoard,usbOut,65);
+    hid_write(mySuBoard_handle,usbOut,65);
 
     memset(usbIn,0xFF,65);
-    hid_read(mySuBoard,usbIn,65);
-
-    suBoardClose(mySuBoard);
-    mySuBoard=NULL;
+    hid_read(mySuBoard_handle,usbIn,65);
 
     if(usbIn[0]==0x3A)
     {
@@ -323,11 +458,33 @@ EXTERN API_EXPORT API_CALL unsigned char readPort(unsigned char portName)
     {
         return 0;
     }
-
 }
 
-EXTERN API_EXPORT API_CALL unsigned char readAnalogPortConfiguration(void)
+EXTERN API_EXPORT API_CALL unsigned char readAnalogPortConfiguration(hid_device* mySuBoard_handle)
 {
+    unsigned char usbIn[65];
+    unsigned char usbOut[65];
+    memset(usbOut,0xFF,65);
+
+    usbOut[0]=0;
+    usbOut[1]=0x3D;
+    usbOut[2]=0xFF;
+    usbOut[3]=0; //writeEnable
+
+    hid_write(mySuBoard_handle,usbOut,65);
+
+    memset(usbIn,0xFF,65);
+    hid_read(mySuBoard_handle,usbIn,65);
+    if(usbIn[0]==0x3D)
+    {
+        return usbIn[1];
+    }
+    else
+    {
+        return 0;
+    }
+
+       /*
     hid_device *mySuBoard=NULL;
     unsigned char usbIn[65];
     unsigned char usbOut[65];
@@ -362,7 +519,7 @@ EXTERN API_EXPORT API_CALL unsigned char readAnalogPortConfiguration(void)
     {
         return 0;
     }
-
+*/
 }
 
 EXTERN API_EXPORT API_CALL unsigned char initMotor(void)
