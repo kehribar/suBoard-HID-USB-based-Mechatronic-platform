@@ -37,14 +37,15 @@ $FE, $94 Move cursor to beginning of third line
 $FE, $D4 Move cursor to beginning of fourth line
 */
 
-EXTERN API_EXPORT API_CALL unsigned char sendLcd(const char sendBuffer[],unsigned char cmd1,unsigned char cmd2,unsigned char cmd3);
-EXTERN API_EXPORT API_CALL unsigned int readAdc(unsigned char channel);
-EXTERN API_EXPORT API_CALL unsigned char configurePort(unsigned char portName,unsigned char value);
-EXTERN API_EXPORT API_CALL unsigned char readPortConfiguration(unsigned char portName);
-EXTERN API_EXPORT API_CALL unsigned char configureAnalogPort(unsigned char value); // Direct write to ADCON1
-EXTERN API_EXPORT API_CALL unsigned char readAnalogPortConfiguration(void);
-EXTERN API_EXPORT API_CALL unsigned char readPort(unsigned char portName);
-EXTERN API_EXPORT API_CALL unsigned char writePort(unsigned char portName, unsigned char value);
+EXTERN API_EXPORT API_CALL hid_device* suBoardOpen(void);
+EXTERN API_EXPORT API_CALL unsigned char sendLcd(hid_device* mySuBoard_handle, const char sendBuffer[],unsigned char cmd1,unsigned char cmd2,unsigned char cmd3); //modified
+EXTERN API_EXPORT API_CALL unsigned int readAdc(hid_device* mySuBoard_handle, unsigned char channel); // modified
+EXTERN API_EXPORT API_CALL unsigned char configurePort(hid_device* mySuBoard_handle, unsigned char portName,unsigned char value); // modified
+EXTERN API_EXPORT API_CALL unsigned char readPortConfiguration(hid_device* mySuBoard_handle, unsigned char portName); //modified
+EXTERN API_EXPORT API_CALL unsigned char configureAnalogPort(hid_device* mySuBoard_handle, unsigned char value); // Direct write to ADCON1  modified
+EXTERN API_EXPORT API_CALL unsigned char readAnalogPortConfiguration(hid_device* mySuBoard_handle);  //modified
+EXTERN API_EXPORT API_CALL unsigned char readPort(hid_device* mySuBoard_handle, unsigned char portName); // modified
+EXTERN API_EXPORT API_CALL unsigned char writePort(hid_device* mySuBoard_handle, unsigned char portName, unsigned char value); // modified
 EXTERN API_EXPORT API_CALL unsigned char initMotor(void);
 EXTERN API_EXPORT API_CALL unsigned char stopMotor(void);
 EXTERN API_EXPORT API_CALL unsigned char attachServo(unsigned char servoNumber, unsigned char portName, unsigned char pinNumber);
